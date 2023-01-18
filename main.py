@@ -2,19 +2,24 @@
 from flask import Flask, request, jsonify
 
 app = Flask(__name__)
-app.run(host='0.0.0.0', port=81)
-countries = [
-    {"id": 1, "name": "Thailand", "capital": "Bangkok", "area": 513120},
-    {"id": 2, "name": "Australia", "capital": "Canberra", "area": 7617930},
-    {"id": 3, "name": "Egypt", "capital": "Cairo", "area": 1010408},
-]
+
+users = {
+    "petr": {"pavel": 15, "jiri": 1, "dan": 4.5},
+    "jakub": {"petr": 15, "jiri": 1, "dan": 4.5},
+    "pavel": {"petr": 15, "jiri": 1, "dan": 4.5},
+    "dan": {"pavel": 15, "jiri": 1, "jakub": 4.5}
+
+}
+
 
 def _find_next_id():
     return max(country["id"] for country in countries) + 1
 
+
 @app.get("/countries")
 def get_countries():
     return jsonify(countries)
+
 
 @app.post("/countries")
 def add_country():
@@ -24,3 +29,6 @@ def add_country():
         countries.append(country)
         return country, 201
     return {"error": "Request must be JSON"}, 415
+
+
+app.run(host='0.0.0.0', port=81)

@@ -1,33 +1,29 @@
 # app.py
 from flask import Flask, request, jsonify
+from typing import List, Dict
 
 app = Flask(__name__)
 
 users = {
-    "petr": {"pavel": 15, "jiri": 1, "dan": 4.5},
-    "jakub": {"petr": 15, "jiri": 1, "dan": 4.5},
-    "pavel": {"petr": 15, "jiri": 1, "dan": 4.5},
-    "dan": {"pavel": 15, "jiri": 1, "jakub": 4.5}
-
+    "jmeno": str,
+    "dluzi": List[Dict[str, float]],
+    "dluzi_mu": List[Dict[str,float]],
+    "suma": float
 }
 
 
-def _find_next_id():
-    return max(country["id"] for country in countries) + 1
+@app.get("/users")
+def get_user():
+    return jsonify(users)
 
 
-@app.get("/countries")
-def get_countries():
-    return jsonify(countries)
-
-
-@app.post("/countries")
-def add_country():
+@app.post("/users")
+def add_user():
     if request.is_json:
-        country = request.get_json()
-        country["id"] = _find_next_id()
-        countries.append(country)
-        return country, 201
+        user = request.get_json()
+        user["jmeno"] = _find_next_id()
+        users.append(user)
+        return user, 201
     return {"error": "Request must be JSON"}, 415
 
 

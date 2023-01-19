@@ -17,11 +17,18 @@ import json, dataclasses
 
 def test_bank():
     bank = Ledger()
-    bank.add_user("petr1") 
-    bank.add_user("petr2")
-   # bank.transaction("petr1", "jabuk", 11)
-    x = bank.get_user("petr1") 
-    print(x)
+    bank.add_user("Petr") 
+    bank.transaction("Pavel", "Petr", 15.0)
+    bank.transaction("Jiri", "Petr", 1.0)
+    bank.transaction("Dan", "Petr", 4.5)
+    
+    bank.transaction("Petr","Jakub",2.5)
+    bank.transaction("Petr","Pavel",6.75)
+    
+    x = bank.get_user("Petr") 
+    a= json.dumps(x.__dict__, indent=2)
+    print(a)
+
 
 
         

@@ -1,30 +1,41 @@
 # app.py
+import json
 from flask import Flask, request, jsonify
 from typing import List, Dict
+from users import User, Ledger
 
-app = Flask(__name__)
+app = Flask(__name__)  # __name__ jmeno instance
 
-users = {
-    "jmeno": str,
-    "dluzi": List[Dict[str, float]],
-    "dluzi_mu": List[Dict[str,float]],
-    "suma": float
-}
+ledger = Ledger()
 
 
-@app.get("/users")
-def get_user():
-    return jsonify(users)
+ledger.add_user("Petr")
+ledger.transaction("Pavel", "Petr", 15.0)
+ledger.transaction("Petr", "Jakub", 2.5)
 
 
-@app.post("/users")
+@app.get("/user/<name>/")  # get user by name
+def get_user(name):
+    user = ledger.get_user(name)
+    return json.dumps(user.__dict__, indent=2)
+
+
+@app.post("/add")  # add new user with name
 def add_user():
+    if request.is_json:  # chci aby pozadavek mel telo Json
+        data = request.get_json()  # veme body a veme napsana data
+        Ledger.add_user(data["user"])
+        return 200
+    return {"error": "Name is not unique or request has wrong format"}, 418
+
+
+@app.post("/transaction")
+def add_transaction():
     if request.is_json:
-        user = request.get_json()
-        user["jmeno"] = _find_next_id()
-        users.append(user)
-        return user, 201
-    return {"error": "Request must be JSON"}, 415
+        data = request.get_json()
+        Ledger.transaction(data["veritel"], data["dluznik"], data["castka"])
+        return 200
+    return {"error": "Request has wrong format"}, 418
 
 
 app.run(host='0.0.0.0', port=81)

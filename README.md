@@ -10,13 +10,13 @@ Simple ledger API to add new user and transactions in style "who - to who - how 
 
 ### How to run
 
-```
+```bash
 python main.py
 ```
 
-Go to we browser:
+Go to web browser:
 
-[localhost:81](localhost:81/)
+[http://localhost:81](http://localhost:81/)
 
 It is possible to add suffix to the URL dependent on the required method
 
@@ -28,8 +28,8 @@ Add transaction: ``/transaction``
 
 ### Methods
 
-Datas of users are given in formate: 
-```
+Data of users are given in format: 
+```json
 {
 "jmeno": "",
 "dluzi": {

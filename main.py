@@ -1,8 +1,19 @@
 # app.py
 import json
+import logging
+import logging.handlers
 from flask import Flask, request, jsonify
 from typing import List, Dict
 from users import User, Ledger
+
+
+logger = logging.getLogger("")
+logger.setLevel(logging.DEBUG)
+console_handler = logging.StreamHandler()
+formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+console_handler.setFormatter(formatter)
+logger.addHandler(console_handler)
+    
 
 app = Flask(__name__)  # __name__ jmeno instance
 
@@ -23,7 +34,7 @@ def get_user(name):
 @app.post("/add")  # add new user with name
 def add_user():
     if request.is_json:  # chci aby pozadavek mel telo Json
-        data = request.get_json()  # veme body a veme napsana data
+        data = request.get_json()  #predelej request do json
         Ledger.add_user(data["user"])
         return 200
     return {"error": "Name is not unique or request has wrong format"}, 418

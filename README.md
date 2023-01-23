@@ -1,4 +1,5 @@
 # RESTful API for tracking transactions
+
 written by: Kamila Hantova
 
 Simple ledger API to add new user and transactions in style "who - to who - how much".
@@ -8,7 +9,7 @@ Simple ledger API to add new user and transactions in style "who - to who - how 
 - Python 3.10.9
 - web browser
 
-### How to run
+## How to run
 
 ```bash
 python main.py
@@ -29,14 +30,17 @@ Add transaction: ``/transaction``
 ### Methods
 
 Data of users are given in format: 
+
 ```json
 {
-"jmeno": "",
-"dluzi": {
-},
-"dluzi_mu": {
-},
-"suma": "<(celková dlužená částka) - (celková dlužná částka)>"
+    "jmeno": "",
+    "dluzi": {
+        "<jmeno_veritele>": <dluzna_castka>
+    },
+    "dluzi_mu": {
+        "<jmeno_dluznika>": <dluzna_castka>
+    },
+    "suma": "<(celková dlužená částka) - (celková dlužná částka)>"
 }
 ```
 
@@ -52,10 +56,15 @@ Get information of one user by name.
 
 [localhost:81/add](localhost:81/add)
 
-
-
 2. Add new transaction: ``{"veritel":<name of creditor>,"dluznik":<name of debtor>,"castka":amount}``
 
 [localhost:81/transaction](localhost:81/transaction)
 
+## Test
 
+
+### How to run 
+
+```bash
+pytest
+```

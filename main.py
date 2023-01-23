@@ -1,15 +1,17 @@
 # app.py
+
 import json
 import logging
 import logging.handlers
+import initialize
 from flask import Flask, request, jsonify
-from typing import List, Dict
-from users import User, Ledger
+from users import Ledger
 
 logger = logging.getLogger("")
 logger.setLevel(logging.DEBUG)
 console_handler = logging.StreamHandler()
-formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+formatter = logging.Formatter(
+    "%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 console_handler.setFormatter(formatter)
 logger.addHandler(console_handler)
 
@@ -17,10 +19,7 @@ app = Flask(__name__)  # __name__ jmeno instance
 
 ledger = Ledger()
 
-ledger.add_user("Petr")
-ledger.transaction("Pavel", "Petr", 15.0)
-ledger.transaction("Petr", "Jakub", 2.5)
-
+initialize.initialize_data(ledger)
 
 @app.get("/user/<name>/")
 def get_user(name):
@@ -41,9 +40,13 @@ def add_user():
 def add_transaction():
     if request.is_json:
         data = request.get_json()
-        ledger.transaction(data["veritel"], data["dluznik"], float(data["castka"]))
+        ledger.transaction(
+            data["veritel"], data["dluznik"], float(data["castka"]))
         return json.dumps({
-            "users": [ledger.get_user(data["veritel"]).__dict__,ledger.get_user(data["dluznik"]).__dict__]
+            "users": [
+                ledger.get_user(data["veritel"]).__dict__,
+                ledger.get_user(data["dluznik"]).__dict__
+            ]
         })
     return {"error": "Request has wrong format"}
 

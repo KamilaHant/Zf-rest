@@ -42,12 +42,9 @@ def add_transaction():
     if request.is_json:
         data = request.get_json()
         ledger.transaction(data["veritel"], data["dluznik"], float(data["castka"]))
-        array = [(data["veritel"]), (data["dluznik"])]
-        array.sort()
-
-        return {
-            "users": [ledger.get_user(array[0]).__dict__,ledger.get_user(array[1]).__dict__]
-        }
+        return json.dumps({
+            "users": [ledger.get_user(data["veritel"]).__dict__,ledger.get_user(data["dluznik"]).__dict__]
+        })
     return {"error": "Request has wrong format"}
 
 

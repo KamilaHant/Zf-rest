@@ -33,10 +33,8 @@ Data of users are given in format:
 {
 "jmeno": "",
 "dluzi": {
-"jmeno": caska,
 },
 "dluzi_mu": {
-"jmeno": caska,
 },
 "suma": "<(celková dlužená částka) - (celková dlužná částka)>"
 }
@@ -50,9 +48,11 @@ Get information of one user by name.
 
 #### POST
 
-1. Add new use by payload: ``{"user":<name of new user(unique)>}``
+1. Add new user: ``{"user":<name of new user(unique)>}``
 
 [localhost:81/add](localhost:81/add)
+
+
 
 2. Add new transaction: ``{"veritel":<name of creditor>,"dluznik":<name of debtor>,"castka":amount}``
 
